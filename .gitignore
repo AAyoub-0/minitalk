@@ -1,0 +1,20 @@
+# Fichiers binaires et objets
+*.o
+*.a
+*.so
+*.out
+*.exe
+
+# Répertoires de compilation
+obj/
+build/
+
+# Éditeurs et IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+client
+server
+*.ini

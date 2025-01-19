@@ -1,0 +1,42 @@
+# Ignore les fichiers de compilation
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dll
+*.dylib
+*.out
+
+# Ignore les fichiers de sauvegarde de l'éditeur
+*~
+*.swp
+*.swo
+
+# Ignore les répertoires de build
+/build/
+/bin/
+/debug/
+/release/
+/dist/
+/libftTester/
+obj/
+
+# Ignore les fichiers générés par CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+
+# Ignore les logs et fichiers de debug
+*.log
+*.stackdump
+core
+
+# Ignore les fichiers temporaires
+*.tmp
+*.temp
+
+# Ignore les fichiers de configuration d'éditeur de code
+.vscode/
+.idea/
