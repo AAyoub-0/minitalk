@@ -6,7 +6,7 @@
 #    By: aayoub <aayoub@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/19 17:12:33 by aayoub            #+#    #+#              #
-#    Updated: 2025/01/19 17:31:46 by aayoub           ###   ########.fr        #
+#    Updated: 2025/01/19 17:43:04 by aayoub           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,8 @@ clean:
 	$(MAKE) clean -C $(LIBFT_DIR)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(SERVER_DIR)
+	rm -f $(CLIENT_DIR)
 	$(MAKE) fclean -C $(LIBFT_DIR)
 
 re: fclean all
