@@ -6,7 +6,7 @@
 /*   By: aayoub <aayoub@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:07:53 by aayoub            #+#    #+#             */
-/*   Updated: 2025/01/19 17:08:38 by aayoub           ###   ########.fr       */
+/*   Updated: 2025/01/19 20:05:00 by aayoub           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINITALK_H
 
 # include <signal.h>
-
-
+# include "libft/libft.h"
 
 # endif

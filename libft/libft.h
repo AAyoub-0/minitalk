@@ -6,7 +6,7 @@
 /*   By: aayoub <aayoub@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:26:45 by aboumall          #+#    #+#             */
-/*   Updated: 2025/01/19 17:10:58 by aayoub           ###   ########.fr       */
+/*   Updated: 2025/01/19 20:22:20 by aayoub           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+typedef enum e_bool
+{
+	false = 0,
+	true = 1
+}					t_bool;
 
 int					ft_tolower(int c);
 int					ft_toupper(int c);

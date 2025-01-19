@@ -6,7 +6,7 @@
 #    By: aayoub <aayoub@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/19 17:12:33 by aayoub            #+#    #+#              #
-#    Updated: 2025/01/19 17:43:04 by aayoub           ###   ########.fr        #
+#    Updated: 2025/01/19 19:45:49 by aayoub           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,9 +35,9 @@ OBJ 		= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ) $(HEAD) $(SRC) Makefile
-	$(CC) $(CFLAGS) -o $(SERVER_DIR) $(OBJ_DIR)/$(SERVER_DIR)/server.o $(LIBFT)
-	$(CC) $(CFLAGS) -o $(CLIENT_DIR) $(OBJ_DIR)/$(CLIENT_DIR)/client.o $(LIBFT)
-
+	$(CC) $(CFLAGS) -o $(SERVER_DIR) $(SRC_DIR)/$(SERVER) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(CLIENT_DIR) $(SRC_DIR)/$(CLIENT) $(LIBFT)
+ 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEAD) Makefile | $(OBJ_DIR)
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
