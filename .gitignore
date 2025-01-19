@@ -17,4 +17,6 @@ build/
 
 client
 server
+!client/
+!server/
 *.ini
