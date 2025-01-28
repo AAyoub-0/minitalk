@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aayoub <aayoub@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:15:42 by aayoub            #+#    #+#             */
-/*   Updated: 2025/01/19 20:58:19 by aayoub           ###   ########.fr       */
+/*   Updated: 2025/01/28 19:43:21 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,17 @@ void    send_msg(int pid, char *msg)
             usleep(100);
         }
         msg++;
+    }
+    i = 7;
+    c = '\0';
+    while (i >= 0)
+    {
+        if (c & (1 << i))
+            kill(pid, SIGUSR1);
+        else
+            kill(pid, SIGUSR2);
+        i--;
+        usleep(100);
     }
 }
 
