@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minitalk.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aayoub <aayoub@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:07:53 by aayoub            #+#    #+#             */
-/*   Updated: 2025/01/19 20:05:00 by aayoub           ###   ########.fr       */
+/*   Updated: 2025/02/10 16:55:29 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 
 # include <signal.h>
 # include "libft/libft.h"
+# include <stdio.h>
 
 # endif
