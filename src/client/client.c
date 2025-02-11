@@ -6,7 +6,7 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:15:42 by aayoub            #+#    #+#             */
-/*   Updated: 2025/02/11 14:59:22 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/11 17:03:05 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,16 @@ void	ft_send_msg(int pid, char *msg)
 
 	while (*msg)
 	{
-		i = 0;
+		i = 7;
 		c = *msg;
-		while (i < 8)
+		while (i >= 0)
 		{
 			ack_received = 0;
-			if (c & 1)
+			if (c & (1 << i))
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
-			c >>= 1;
-			i++;
+			i--;
 			while (!ack_received)
 				pause();
 		}
@@ -92,8 +91,8 @@ void    ft_send(int pid, char *msg)
 	if (len == 0)
 		return ;
 	ft_send_len(pid, len);
-	// ft_send_msg(pid, msg);
-	// ft_send_eom(pid);
+	ft_send_msg(pid, msg);
+	ft_send_eom(pid);
 }
 
 int main(int ac, char **av)
