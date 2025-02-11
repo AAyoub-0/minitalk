@@ -6,7 +6,7 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:15:42 by aayoub            #+#    #+#             */
-/*   Updated: 2025/02/10 17:25:22 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:59:22 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,18 @@ void	ft_send_len(int pid, size_t len)
 
 	i = 0;
 	mask = (size_t)1 << (sizeof(size_t) * 8 - 1);
-	printf("len: %zu\n", len);
 	while (i < sizeof(size_t) * 8)
 	{
 		ack_received = 0;
 		if (len & mask)
-		{
 			kill(pid, SIGUSR1);
-			printf("1");
-		}
 		else
-		{			
 			kill(pid, SIGUSR2);
-			printf("0");
-		}
-		if (i % 8 == 7)
-			printf(" ");
 		mask >>= 1;
 		i++;
-		usleep(100);
+		while (!ack_received)
+			pause();
 	}
-	printf("\n");
 }
 
 void	ft_send_eom(int pid)
@@ -60,9 +51,11 @@ void	ft_send_eom(int pid)
 	c = '\0';
 	while (i >= 0)
 	{
+		ack_received = 0;
 		kill(pid, SIGUSR2);
 		i--;
-		usleep(100);
+		while (!ack_received)
+			pause();
 	}
 }
 
@@ -77,13 +70,15 @@ void	ft_send_msg(int pid, char *msg)
 		c = *msg;
 		while (i < 8)
 		{
+			ack_received = 0;
 			if (c & 1)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
 			c >>= 1;
 			i++;
-			usleep(100);
+			while (!ack_received)
+				pause();
 		}
 		msg++;
 	}
@@ -92,11 +87,7 @@ void	ft_send_msg(int pid, char *msg)
 void    ft_send(int pid, char *msg)
 {
 	size_t	len;
-	struct sigaction sa;
 
-	sa.sa_handler = handle_action;
-	sa.sa_flags = 0;
-	sigaction(SIGUSR1, &sa, NULL);
 	len = ft_strlen(msg);
 	if (len == 0)
 		return ;
@@ -107,12 +98,17 @@ void    ft_send(int pid, char *msg)
 
 int main(int ac, char **av)
 {
+	struct sigaction sa;
+
 	if (ac != 3)
 	{
 		ft_printf("Usage: %s <server_pid> <message>\n", av[0]);
-		return (1);
+		return (EXIT_FAILURE);
 	}
+	sa.sa_handler = handle_action;
+	sa.sa_flags = 0;
+	sigaction(SIGUSR1, &sa, NULL);
 	ft_printf("Sending message: %s\n", av[2]);
 	ft_send(ft_atoi(av[1]), av[2]);
-	return (0);
+	return (EXIT_SUCCESS);
 }
