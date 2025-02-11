@@ -6,23 +6,23 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:15:42 by aayoub            #+#    #+#             */
-/*   Updated: 2025/02/11 17:03:05 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:10:15 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minitalk.h"
 
-volatile sig_atomic_t ack_received = 0;
+volatile sig_atomic_t	g_ack_received = 0;
 
-void handle_action(int sig)
+void	handle_action(int sig)
 {
 	(void)sig;
-	ack_received = 1;
+	g_ack_received = 1;
 }
 
 void	ft_send_len(int pid, size_t len)
 {
-	int	i;
+	int		i;
 	size_t	mask;
 	char	c;
 
@@ -30,38 +30,21 @@ void	ft_send_len(int pid, size_t len)
 	mask = (size_t)1 << (sizeof(size_t) * 8 - 1);
 	while (i < sizeof(size_t) * 8)
 	{
-		ack_received = 0;
+		g_ack_received = 0;
 		if (len & mask)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
 		mask >>= 1;
 		i++;
-		while (!ack_received)
-			pause();
-	}
-}
-
-void	ft_send_eom(int pid)
-{
-	int	i;
-	char	c;
-	
-	i = 7;
-	c = '\0';
-	while (i >= 0)
-	{
-		ack_received = 0;
-		kill(pid, SIGUSR2);
-		i--;
-		while (!ack_received)
+		while (!g_ack_received)
 			pause();
 	}
 }
 
 void	ft_send_msg(int pid, char *msg)
 {
-	int	i;
+	int		i;
 	char	c;
 
 	while (*msg)
@@ -70,34 +53,43 @@ void	ft_send_msg(int pid, char *msg)
 		c = *msg;
 		while (i >= 0)
 		{
-			ack_received = 0;
+			g_ack_received = 0;
 			if (c & (1 << i))
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
 			i--;
-			while (!ack_received)
+			while (!g_ack_received)
 				pause();
 		}
 		msg++;
 	}
 }
 
-void    ft_send(int pid, char *msg)
+void	ft_send(int pid, char *msg)
 {
 	size_t	len;
+	int		i;
 
 	len = ft_strlen(msg);
 	if (len == 0)
 		return ;
 	ft_send_len(pid, len);
 	ft_send_msg(pid, msg);
-	ft_send_eom(pid);
+	i = 7;
+	while (i >= 0)
+	{
+		g_ack_received = 0;
+		kill(pid, SIGUSR2);
+		i--;
+		while (!g_ack_received)
+			pause();
+	}
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	if (ac != 3)
 	{
