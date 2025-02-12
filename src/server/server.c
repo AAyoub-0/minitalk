@@ -6,7 +6,7 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:07:52 by aboumall          #+#    #+#             */
-/*   Updated: 2025/02/11 18:07:54 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:22:12 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,8 @@ void	ft_read_msg(int sig, int s_pid)
 	if (!g_server.msg)
 	{
 		g_server.msg = ft_calloc(g_server.len, sizeof(char));
-		if (!g_server.msg)
-		{
-			ft_putstr_fd("Error\n", 2);
+		if (!(g_server.msg))
 			exit(EXIT_FAILURE);
-		}
 	}
 	g_server.c = (g_server.c << 1) | (sig == SIGUSR1);
 	if (g_server.msg_b < 8)
@@ -81,7 +78,7 @@ int	main(void)
 	struct sigaction	act;
 
 	ft_init_server();
-	ft_printf("g_server PID: %d\n", getpid());
+	ft_printf("server PID: %d\n", getpid());
 	act.sa_sigaction = ft_handle_sigusr;
 	act.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &act, NULL);

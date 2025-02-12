@@ -6,7 +6,7 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:15:42 by aayoub            #+#    #+#             */
-/*   Updated: 2025/02/11 18:10:15 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:16:50 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ void	handle_action(int sig)
 
 void	ft_send_len(int pid, size_t len)
 {
-	int		i;
+	size_t	i;
 	size_t	mask;
-	char	c;
 
 	i = 0;
 	mask = (size_t)1 << (sizeof(size_t) * 8 - 1);

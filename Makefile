@@ -3,42 +3,50 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aayoub <aayoub@student.42.fr>              +#+  +:+       +#+         #
+#    By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/19 17:12:33 by aayoub            #+#    #+#              #
-#    Updated: 2025/01/19 19:45:49 by aayoub           ###   ########.fr        #
+#    Updated: 2025/02/12 15:18:03 by aboumall         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME 		= minitalk
-HEAD 		= minitalk.h
+NAME 			= minitalk
+HEAD 			= minitalk.h
 
-CC 			= cc
-CFLAGS 		= -g
+CC 				= cc
+CFLAGS 			= -Wall -Wextra -Werror
 
-SERVER_DIR 	= server
-CLIENT_DIR 	= client
-LIBFT_DIR 	= libft
-SRC_DIR 	= src
-OBJ_DIR 	= obj
+SERVER_DIR 		= server
+CLIENT_DIR 		= client
+LIBFT_DIR 		= libft
+SRC_DIR 		= src
+OBJ_DIR 		= obj
 
-SERVER_SRC 	= server.c
-CLIENT_SRC 	= client.c
-LIBFT_A 	= libft.a
+SERVER_SRC 		= server.c
+CLIENT_SRC 		= client.c
+LIBFT_A 		= libft.a
 
-SERVER 		= $(addprefix $(SERVER_DIR)/, $(SERVER_SRC))
-CLIENT 		= $(addprefix $(CLIENT_DIR)/, $(CLIENT_SRC))
-LIBFT 		= $(addprefix $(LIBFT_DIR)/, $(LIBFT_A))
-SRC   		= $(addprefix $(SRC_DIR)/, $(SERVER) $(CLIENT))
-OBJ 		= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+SERVER_FILES	= $(addprefix $(SRC_DIR)/$(SERVER_DIR)/, $(SERVER_SRC))
+CLIENT_FILES	= $(addprefix $(SRC_DIR)/$(CLIENT_DIR)/, $(CLIENT_SRC))
+
+SERVER_OBJ		= $(SERVER_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+CLIENT_OBJ		= $(CLIENT_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+LIBFT 			= $(LIBFT_DIR)/$(LIBFT_A)
+SERVER_BIN 		= server
+CLIENT_BIN 		= client
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ) $(HEAD) $(SRC) Makefile
-	$(CC) $(CFLAGS) -o $(SERVER_DIR) $(SRC_DIR)/$(SERVER) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(CLIENT_DIR) $(SRC_DIR)/$(CLIENT) $(LIBFT)
- 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEAD) Makefile | $(OBJ_DIR)
+$(NAME): $(LIBFT) $(SERVER_BIN) $(CLIENT_BIN)
+
+$(SERVER_BIN): $(SERVER_OBJ) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(SERVER_BIN) $(SERVER_OBJ) $(LIBFT)
+
+$(CLIENT_BIN): $(CLIENT_OBJ) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(CLIENT_BIN) $(CLIENT_OBJ) $(LIBFT)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEAD) | $(OBJ_DIR)
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -49,13 +57,12 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(SERVER_OBJ) $(CLIENT_OBJ)
 	rm -rf $(OBJ_DIR)
 	$(MAKE) clean -C $(LIBFT_DIR)
 
 fclean: clean
-	rm -f $(SERVER_DIR)
-	rm -f $(CLIENT_DIR)
+	rm -f $(SERVER_BIN) $(CLIENT_BIN)
 	$(MAKE) fclean -C $(LIBFT_DIR)
 
 re: fclean all

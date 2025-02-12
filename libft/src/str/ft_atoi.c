@@ -6,7 +6,7 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 15:27:51 by aboumall          #+#    #+#             */
-/*   Updated: 2025/01/15 13:15:57 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:23:41 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,19 @@ int	ft_atoi_cursor(char *nptr, int *cursor, int *error)
 	sign = 1;
 	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == ' ')
 		i++;
-    if (nptr[i] == '-')
-        sign *= -1;
-    i++;
+	if (nptr[i] == '-')
+		sign *= -1;
+	i++;
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-        if (is_toolarge(result, nptr[i]) <= 0)
-        {
-            (*error) = 1;
+		if (is_toolarge(result, nptr[i]) <= 0)
+		{
+			(*error) = 1;
 			return (0);
-        }
+		}
 		result = result * 10 + nptr[i] - '0';
 		i++;
 	}
-    (*cursor) = (*cursor) + i;
+	(*cursor) = (*cursor) + i;
 	return (result * sign);
 }
