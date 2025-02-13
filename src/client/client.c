@@ -6,99 +6,63 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:15:42 by aayoub            #+#    #+#             */
-/*   Updated: 2025/02/12 15:16:50 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/13 13:52:19 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minitalk.h"
 
-volatile sig_atomic_t	g_ack_received = 0;
-
-void	handle_action(int sig)
+t_bool	ft_check_args(int ac, char **av)
 {
-	(void)sig;
-	g_ack_received = 1;
-}
+	int	i;
 
-void	ft_send_len(int pid, size_t len)
-{
-	size_t	i;
-	size_t	mask;
-
+	if (ac != 3)
+	{
+		ft_printf("Usage: %s <server_pid> <message>\n", av[0]);
+		return (false);
+	}
 	i = 0;
-	mask = (size_t)1 << (sizeof(size_t) * 8 - 1);
-	while (i < sizeof(size_t) * 8)
+	while (av[1][i])
 	{
-		g_ack_received = 0;
-		if (len & mask)
-			kill(pid, SIGUSR1);
-		else
-			kill(pid, SIGUSR2);
-		mask >>= 1;
-		i++;
-		while (!g_ack_received)
-			pause();
-	}
-}
-
-void	ft_send_msg(int pid, char *msg)
-{
-	int		i;
-	char	c;
-
-	while (*msg)
-	{
-		i = 7;
-		c = *msg;
-		while (i >= 0)
+		if (!ft_isdigit(av[1][i]))
 		{
-			g_ack_received = 0;
-			if (c & (1 << i))
-				kill(pid, SIGUSR1);
-			else
-				kill(pid, SIGUSR2);
-			i--;
-			while (!g_ack_received)
-				pause();
+			ft_printf("<server_pid> must be of type int\n");
+			return (false);
 		}
-		msg++;
+		i++;
 	}
+	return (true);
 }
 
 void	ft_send(int pid, char *msg)
 {
 	size_t	len;
-	int		i;
 
 	len = ft_strlen(msg);
 	if (len == 0)
 		return ;
 	ft_send_len(pid, len);
 	ft_send_msg(pid, msg);
-	i = 7;
-	while (i >= 0)
-	{
-		g_ack_received = 0;
-		kill(pid, SIGUSR2);
-		i--;
-		while (!g_ack_received)
-			pause();
-	}
+	ft_send_eom(pid);
 }
 
 int	main(int ac, char **av)
 {
 	struct sigaction	sa;
+	int					pid;
 
-	if (ac != 3)
-	{
-		ft_printf("Usage: %s <server_pid> <message>\n", av[0]);
+	if (!ft_check_args(ac, av))
 		return (EXIT_FAILURE);
-	}
-	sa.sa_handler = handle_action;
+	pid = ft_atoi(av[1]);
+	sa.sa_handler = ft_handle_action;
 	sa.sa_flags = 0;
 	sigaction(SIGUSR1, &sa, NULL);
+	if (!ft_ping_serv(pid))
+	{
+		ft_printf("Server not responding\n");
+		return (EXIT_FAILURE);
+	}
 	ft_printf("Sending message: %s\n", av[2]);
-	ft_send(ft_atoi(av[1]), av[2]);
+	ft_send(pid, av[2]);
 	return (EXIT_SUCCESS);
 }

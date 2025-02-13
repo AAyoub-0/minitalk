@@ -6,7 +6,7 @@
 #    By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/19 17:12:33 by aayoub            #+#    #+#              #
-#    Updated: 2025/02/12 15:18:03 by aboumall         ###   ########.fr        #
+#    Updated: 2025/02/12 16:52:43 by aboumall         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC_DIR 		= src
 OBJ_DIR 		= obj
 
 SERVER_SRC 		= server.c
-CLIENT_SRC 		= client.c
+CLIENT_SRC 		= client.c client_utils.c
 LIBFT_A 		= libft.a
 
 SERVER_FILES	= $(addprefix $(SRC_DIR)/$(SERVER_DIR)/, $(SERVER_SRC))

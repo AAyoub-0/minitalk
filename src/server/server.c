@@ -6,51 +6,52 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:07:52 by aboumall          #+#    #+#             */
-/*   Updated: 2025/02/12 15:22:12 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/13 13:53:36 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minitalk.h"
 
-static t_server	g_server;
+static t_server	g_s;
 
 void	ft_init_server(void)
 {
-	g_server.c = 0;
-	g_server.eom = false;
-	g_server.msg = NULL;
-	g_server.msg_b = 0;
-	g_server.len_b = 0;
-	g_server.msg_len = 0;
-	g_server.len = 0;
+	g_s.c = 0;
+	g_s.eom = false;
+	g_s.ping = false;
+	g_s.msg = NULL;
+	g_s.msg_b = 0;
+	g_s.len_b = 0;
+	g_s.msg_len = 0;
+	g_s.len = 0;
 }
 
 void	ft_read_len(int sig, int s_pid)
 {
-	g_server.len = (g_server.len << 1) | (sig == SIGUSR1);
-	g_server.len_b++;
+	g_s.len = (g_s.len << 1) | (sig == SIGUSR1);
+	g_s.len_b++;
 	kill(s_pid, SIGUSR1);
 }
 
 void	ft_read_msg(int sig, int s_pid)
 {
-	if (!g_server.msg)
+	if (!g_s.msg)
 	{
-		g_server.msg = ft_calloc(g_server.len, sizeof(char));
-		if (!(g_server.msg))
+		g_s.msg = ft_calloc(g_s.len, sizeof(char));
+		if (!(g_s.msg))
 			exit(EXIT_FAILURE);
 	}
-	g_server.c = (g_server.c << 1) | (sig == SIGUSR1);
-	if (g_server.msg_b < 8)
-		g_server.msg_b++;
-	if (g_server.msg_b == 8)
+	g_s.c = (g_s.c << 1) | (sig == SIGUSR1);
+	if (g_s.msg_b < 8)
+		g_s.msg_b++;
+	if (g_s.msg_b == 8)
 	{
-		g_server.msg[g_server.msg_len] = g_server.c;
-		g_server.msg_len++;
-		g_server.msg_b = 0;
-		g_server.c = 0;
-		if (g_server.c == '\0' && g_server.msg_len > g_server.len)
-			g_server.eom = true;
+		g_s.msg[g_s.msg_len] = g_s.c;
+		g_s.msg_len++;
+		g_s.msg_b = 0;
+		g_s.c = 0;
+		if (g_s.c == '\0' && g_s.msg_len > g_s.len)
+			g_s.eom = true;
 	}
 	kill(s_pid, SIGUSR1);
 }
@@ -61,14 +62,20 @@ void	ft_handle_sigusr(int sig, siginfo_t *info, void *context)
 
 	(void)context;
 	s_pid = info->si_pid;
-	if (g_server.len_b < 64)
+	if (!g_s.ping)
+	{
+		g_s.ping = true;
+		kill(s_pid, SIGUSR1);
+		return ;
+	}
+	if (g_s.len_b < 64)
 		ft_read_len(sig, s_pid);
 	else
 		ft_read_msg(sig, s_pid);
-	if (g_server.eom)
+	if (g_s.eom)
 	{
-		ft_printf("message received : %s\n", g_server.msg);
-		free(g_server.msg);
+		ft_printf("message received : %s\n", g_s.msg);
+		free(g_s.msg);
 		ft_init_server();
 	}
 }
