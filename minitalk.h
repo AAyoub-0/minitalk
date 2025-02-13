@@ -6,7 +6,7 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:07:53 by aayoub            #+#    #+#             */
-/*   Updated: 2025/02/13 13:52:15 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:03:17 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "libft/libft.h"
 # include <signal.h>
-# include <stdio.h>
 
 typedef struct s_server
 {
