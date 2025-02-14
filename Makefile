@@ -6,7 +6,7 @@
 #    By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/19 17:12:33 by aayoub            #+#    #+#              #
-#    Updated: 2025/02/13 14:11:38 by aboumall         ###   ########.fr        #
+#    Updated: 2025/02/14 19:51:27 by aboumall         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,11 +40,11 @@ all: $(NAME)
 
 $(NAME): $(LIBFT) $(SERVER_BIN) $(CLIENT_BIN)
 
-$(SERVER_BIN): $(SERVER_OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(SERVER_BIN) $(SERVER_OBJ) $(LIBFT) Makefile
+$(SERVER_BIN): $(SERVER_OBJ) $(LIBFT) Makefile
+	$(CC) $(CFLAGS) -o $(SERVER_BIN) $(SERVER_OBJ) $(LIBFT)
 
-$(CLIENT_BIN): $(CLIENT_OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(CLIENT_BIN) $(CLIENT_OBJ) $(LIBFT) Makefile
+$(CLIENT_BIN): $(CLIENT_OBJ) $(LIBFT) Makefile
+	$(CC) $(CFLAGS) -o $(CLIENT_BIN) $(CLIENT_OBJ) $(LIBFT)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEAD) | $(OBJ_DIR)
 	mkdir -p $(dir $@)

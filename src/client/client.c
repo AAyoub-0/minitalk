@@ -6,7 +6,7 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:15:42 by aayoub            #+#    #+#             */
-/*   Updated: 2025/02/13 13:52:19 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/14 19:53:50 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,10 @@ int	main(int ac, char **av)
 	if (!ft_check_args(ac, av))
 		return (EXIT_FAILURE);
 	pid = ft_atoi(av[1]);
+	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = ft_handle_action;
 	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	if (!ft_ping_serv(pid))
 	{

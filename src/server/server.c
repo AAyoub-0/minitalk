@@ -6,7 +6,7 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:07:52 by aboumall          #+#    #+#             */
-/*   Updated: 2025/02/13 13:53:36 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/14 19:51:53 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,10 @@ int	main(void)
 
 	ft_init_server();
 	ft_printf("server PID: %d\n", getpid());
+	ft_memset(&act, 0, sizeof(act));
 	act.sa_sigaction = ft_handle_sigusr;
 	act.sa_flags = SA_SIGINFO;
+	sigemptyset(&act.sa_mask);
 	sigaction(SIGUSR1, &act, NULL);
 	sigaction(SIGUSR2, &act, NULL);
 	while (true)
