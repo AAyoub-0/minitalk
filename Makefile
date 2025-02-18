@@ -6,7 +6,7 @@
 #    By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/19 17:12:33 by aayoub            #+#    #+#              #
-#    Updated: 2025/02/14 19:51:27 by aboumall         ###   ########.fr        #
+#    Updated: 2025/02/18 13:14:16 by aboumall         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEAD) | $(OBJ_DIR)
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
-$(LIBFT):
+$(LIBFT): force
 	$(MAKE) -C $(LIBFT_DIR)
 
 clean:
@@ -67,4 +67,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+force:
+
+.PHONY: all clean fclean re force

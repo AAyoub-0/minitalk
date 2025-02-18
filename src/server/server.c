@@ -6,7 +6,7 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:07:52 by aboumall          #+#    #+#             */
-/*   Updated: 2025/02/14 19:51:53 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/18 13:13:58 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_read_msg(int sig, int s_pid)
 {
 	if (!g_s.msg)
 	{
-		g_s.msg = ft_calloc(g_s.len, sizeof(char));
+		g_s.msg = ft_calloc(g_s.len + 1, sizeof(char));
 		if (!(g_s.msg))
 			exit(EXIT_FAILURE);
 	}
