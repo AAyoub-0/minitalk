@@ -6,7 +6,7 @@
 /*   By: aboumall <aboumall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:15:42 by aayoub            #+#    #+#             */
-/*   Updated: 2025/02/14 19:53:50 by aboumall         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:07:14 by aboumall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_bool	ft_check_args(int ac, char **av)
 	{
 		if (!ft_isdigit(av[1][i]))
 		{
-			ft_printf("<server_pid> must be of type int\n");
+			ft_printf("Error\n<server_pid> must be of type int\n");
 			return (false);
 		}
 		i++;
@@ -58,10 +58,14 @@ int	main(int ac, char **av)
 	sa.sa_handler = ft_handle_action;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
-	sigaction(SIGUSR1, &sa, NULL);
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+	{
+		ft_putendl_fd("Error\nsigaction SIGUSR1\n", 2);
+		return (EXIT_FAILURE);
+	}
 	if (!ft_ping_serv(pid))
 	{
-		ft_printf("Server not responding\n");
+		ft_printf("Error\nServer not responding\n");
 		return (EXIT_FAILURE);
 	}
 	ft_printf("Sending message: %s\n", av[2]);
